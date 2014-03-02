@@ -12,14 +12,12 @@
 #import "DPTimerDatumDrawingView.h"
 #import "DPFlippedView.h"
 #import "DPTimerBackgroundView.h"
-
-//#import "NSView+DPFrameUtils.h"
+#import "NSView+DPFrameUtils.h"
 
 @implementation DPTimerDatumView
 
 @synthesize datumView;
 @synthesize scrollView;
-
 @synthesize backgroundView;
 
 - (id) initWithFrame: (NSRect) frameRect {
@@ -58,7 +56,7 @@
     [scrollView superConstrainCenterX];
     [scrollView superConstrainCenterY];
 
-    //self.datumView.height = self.height;
+    self.datumView.height = self.height;
     [scrollView.flippedView addSubview: self.datumView];
     [datumView superConstrainEdges];
 

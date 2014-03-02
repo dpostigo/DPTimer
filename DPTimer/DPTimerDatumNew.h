@@ -15,8 +15,12 @@
 @property(nonatomic, strong) NSMutableArray *datums;
 @property(nonatomic, strong) NSDate *startDate;
 @property(nonatomic, strong) NSDate *endDate;
+
 - (instancetype) initWithStartDate: (NSDate *) aStartDate endDate: (NSDate *) anEndDate;
 - (instancetype) initWithStartDate: (NSDate *) aStartDate;
 
 
+- (void) start;
+- (void) pause;
+- (NSTimeInterval) totalTime;
 @end

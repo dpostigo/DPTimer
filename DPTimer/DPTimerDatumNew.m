@@ -17,12 +17,11 @@
         startDate = aStartDate;
         endDate = anEndDate;
     }
-
     return self;
 }
 
 - (instancetype) initWithStartDate: (NSDate *) aStartDate {
-    return [self initWithStartDate: startDate endDate: nil];
+    return [self initWithStartDate: aStartDate endDate: nil];
 }
 
 
@@ -56,6 +55,33 @@
         datums = [[NSMutableArray alloc] init];
     }
     return datums;
+}
+
+- (NSTimeInterval) totalTime {
+    NSTimeInterval ret = 0;
+    for (int j = 0; j < [self.datums count]; j++) {
+        DPTimerDatumNew *datum = [self.datums objectAtIndex: j];
+        ret += datum.duration;
+
+    }
+    return ret;
+}
+
+
+- (NSTimeInterval) duration {
+    NSTimeInterval ret = 0;
+    if (self.startDate) {
+        if (self.endDate) {
+            ret = [self.endDate timeIntervalSinceDate: self.startDate];
+        } else {
+            ret = -[self.startDate timeIntervalSinceNow];
+        }
+    }
+
+    if (ret < 0) {
+        NSLog(@"ret = %f", ret);
+    }
+    return ret;
 }
 
 @end

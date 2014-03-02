@@ -3,7 +3,6 @@
 // Copyright (c) 2014 Dani Postigo. All rights reserved.
 //
 
-#import "DPTimeControlTextField.h"
 #import "DPTimerTextField.h"
 #import "DPTimerDatum.h"
 

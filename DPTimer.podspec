@@ -17,6 +17,9 @@ Pod::Spec.new do |s|
   s.source_files = 'DPTimer/*.{h,m}'
 
 
+  s.subspec 'Data Views' do |dataViews|
+    dataViews.source_files = 'DPTimer/Data Views/*.{h,m}'
+  end
 
 
   s.dependency	'NSView-NewConstraints'
