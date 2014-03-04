@@ -20,6 +20,10 @@ Pod::Spec.new do |s|
   s.subspec 'Data Views' do |dataViews|
     dataViews.source_files = 'DPTimer/Data Views/*.{h,m}'
   end
+  
+   s.subspec 'DPTimerTextField' do |timerTextField|
+    timerTextField.source_files = 'DPTimer/DPTimerTextField/*.{h,m}'
+  end
 
 
   s.dependency	'NSView-NewConstraints'

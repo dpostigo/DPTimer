@@ -6,7 +6,6 @@
 #import <Foundation/Foundation.h>
 
 @interface DPTimerDatumNew : NSObject {
-
     NSDate *startDate;
     NSDate *endDate;
     NSMutableArray *datums;

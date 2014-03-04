@@ -15,7 +15,6 @@
 #import "NSView+SiblingConstraints.h"
 #import "DPTimerDatumInfoView.h"
 
-
 #import "NSView+DPFrameUtils.h"
 
 @implementation DPTimerDatumDrawingView

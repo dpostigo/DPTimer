@@ -6,8 +6,10 @@
 
 @class DPTimerDatumNew;
 @protocol DPTimerTextFieldDelegate;
+@class WDCountdownFormatter;
+@class DPTimerCountdownFormatter;
 
-@interface DPTimerTextFieldNew : NSTextField {
+@interface DPTimerTextField : NSTextField {
     IBOutlet DPTimerDatumNew *timerDatum;
     BOOL isRunning;
     BOOL didStart;
@@ -21,9 +23,13 @@
 @property(nonatomic, strong) NSTimer *timer;
 @property(nonatomic, assign) id <DPTimerTextFieldDelegate> timerDelegate;
 @property(nonatomic) BOOL didStart;
+
+@property(nonatomic, strong) NSDate *startDate;
+- (DPTimerCountdownFormatter *) countdownFormatter;
+- (void) reset;
 - (IBAction) timerStart: (id) sender;
 - (IBAction) timerPause: (id) sender;
 - (IBAction) timerToggle: (id) sender;
-- (NSDate *) startDate;
+- (NSTimeInterval) totalTime;
 - (NSDate *) endDate;
 @end

@@ -84,4 +84,15 @@
     return ret;
 }
 
+
+#pragma mark Modify dates
+
+- (void) setStartDate: (NSDate *) startDate1 {
+    if (startDate != startDate1) {
+        startDate = startDate1;
+        self.firstDatum.startDate = startDate;
+    }
+}
+
+
 @end

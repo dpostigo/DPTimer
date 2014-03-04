@@ -3,20 +3,19 @@
 //
 
 #import <DPKit/NSObject+CallSelector.h>
-#import "DPTimerTextFieldNew.h"
+#import "DPTimerTextField.h"
 #import "WDCountdownFormatter.h"
 #import "DPTimerDatumNew.h"
 #import "DPTimerTextFieldDelegate.h"
+#import "DPTimerCountdownFormatter.h"
 
-@implementation DPTimerTextFieldNew
+@implementation DPTimerTextField
 
 @synthesize isRunning;
 @synthesize timerDatum;
 
 @synthesize timer;
-
 @synthesize timerDelegate;
-
 @synthesize didStart;
 
 - (id) initWithFrame: (NSRect) frameRect {
@@ -40,9 +39,12 @@
 
 - (void) setup {
     if (self.formatter == nil || (self.formatter && ![self.formatter isKindOfClass: [WDCountdownFormatter class]])) {
-        self.formatter = [[WDCountdownFormatter alloc] init];
+        self.formatter = [[DPTimerCountdownFormatter alloc] init];
     }
+}
 
+- (DPTimerCountdownFormatter *) countdownFormatter {
+    return [self.formatter isKindOfClass: [DPTimerCountdownFormatter class]] ? self.formatter : nil;
 }
 
 - (void) awakeFromNib {
@@ -50,6 +52,17 @@
     [[self cell] setPlaceholderString: @"00:00:00"];
 }
 
+
+#pragma mark Reset
+
+- (void) reset {
+    [self timerPause];
+    [[self cell] setPlaceholderString: @"00:00:00"];
+    timerDatum = nil;
+    didStart = NO;
+    [self timerUpdate: nil];
+
+}
 
 #pragma mark Timer start
 
@@ -59,6 +72,7 @@
         [self.timerDatum start];
         [self startUpdating];
         self.didStart = YES;
+        [self timerUpdate: nil];
         [self forwardSelector: @selector(timerTextFieldDidResume:) delegate: timerDelegate object: self];
     }
 }
@@ -68,6 +82,7 @@
 }
 
 #pragma mark Timer pause
+
 - (void) timerPause {
     if (isRunning) {
         isRunning = NO;
@@ -110,13 +125,27 @@
 }
 
 - (void) timerUpdate: (id) sender {
+    double timePassed_ms = [self.timerDatum.startDate timeIntervalSinceNow] * -1000.0;
 
     NSTimeInterval interval = -[self.timerDatum.startDate timeIntervalSinceNow];
     self.doubleValue = self.timerDatum.totalTime;
+
+    double remainder = fmod(self.timerDatum.totalTime, 60);
+    if (remainder < 1) {
+        NSLog(@"remainder = %f", remainder);
+    }
+    if (fmod(self.timerDatum.totalTime, 60) < 1) {
+        [self forwardSelector: @selector(timerTextFieldDidIncrementMinute:) delegate: timerDelegate object: self];
+    }
+
+    if (fmod(self.timerDatum.totalTime, 60 * 60) < 1) {
+        [self forwardSelector: @selector(timerTextFieldDidIncrementHour:) delegate: timerDelegate object: self];
+    }
 }
 
 
 #pragma mark Getters
+
 - (DPTimerDatumNew *) timerDatum {
     if (timerDatum == nil) {
         timerDatum = [[DPTimerDatumNew alloc] init];
@@ -125,8 +154,20 @@
 }
 
 
+#pragma mark Start Date
+
 - (NSDate *) startDate {
     return self.timerDatum.startDate;
+}
+
+- (void) setStartDate: (NSDate *) startDate {
+    self.timerDatum.startDate = startDate;
+    [self timerUpdate: nil];
+}
+
+
+- (NSTimeInterval) totalTime {
+    return self.timerDatum.totalTime;
 }
 
 - (NSDate *) endDate {
